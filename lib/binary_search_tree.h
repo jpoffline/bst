@@ -113,7 +113,9 @@ template<typename KY, typename DT>
 inline void 
 binary_search_tree<KY, DT>::_add_leaf(KY key, DT data, bst_node<KY, DT>* ptr) {
 
-	if (root == nullptr) root = _create_leaf(key, data);
+	if (root == nullptr) {
+		root = _create_leaf(key, data);
+	}
 	else if (key < ptr->get_key()) {
 		if (ptr->get_left() != nullptr) {
 			_add_leaf(key, data, ptr->get_left());

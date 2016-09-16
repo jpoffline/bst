@@ -10,6 +10,8 @@
 
 EVENT_PROXY_COLLECTION<int, int, int>
 gen_event_pc(int N) {
+	/// Quick function to generate and return 
+	/// "an event" with a set of proxies and haz bins.
 	EVENT_PROXY_COLLECTION<int, int, int> this_event;
 	this_event.set_eventid(N);
 	for (int i = 0; i < N; i++) {
@@ -33,6 +35,7 @@ void event_proxy_collection_example() {
 
 	myTreeEvent_pc.print_root();
 	myTreeEvent_pc.print_in_order();
+
 }
 
 void event_example() {
