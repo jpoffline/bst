@@ -2,17 +2,17 @@
 #include <ostream>
 #include <vector>
 
-template <class T>
+template <class KY>
 class NODE {
 	private:
-		T data;
+		KY data;
 		NODE* next;
 	public:
 		
-		T get_data() {
+		KY get_data() {
 			return data;
 		}
-		void set_data(T d) {
+		void set_data(KY d) {
 			data = d;
 		}
 		NODE* get_next() {
@@ -28,14 +28,14 @@ class NODE {
 };
 
 
-template <class T>
+template <class KY>
 class linked_list {
 
 	private:
 
-		NODE<T>* HEAD;
-		NODE<T>* CURR;
-		NODE<T>* TEMP;
+		NODE<KY>* HEAD;
+		NODE<KY>* CURR;
+		NODE<KY>* TEMP;
 
 	public:
 
@@ -45,8 +45,8 @@ class linked_list {
 			TEMP = nullptr; 
 		};
 
-		void add_node(T data_add) {
-			NODE<T>* n = new NODE<T>;
+		void add_node(KY data_add) {
+			NODE<KY>* n = new NODE<KY>;
 			n->set_next(nullptr);
 			n->set_data(data_add);
 
@@ -63,8 +63,8 @@ class linked_list {
 			
 		};
 
-		void delete_node(T data_del) {
-			NODE<T>* delPtr = nullptr;
+		void delete_node(KY data_del) {
+			NODE<KY>* delPtr = nullptr;
 			TEMP = HEAD;
 			CURR = HEAD;
 			while (CURR != nullptr && CURR->get_data() != data_del) {

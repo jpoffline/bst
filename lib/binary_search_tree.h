@@ -1,7 +1,7 @@
 #pragma once
 #include <iostream>
 
-template <typename K, typename D>
+template <typename KY, typename DT>
 class bst_node {
 	///
 	///	node element of the binary search tree.
@@ -9,27 +9,30 @@ class bst_node {
 	/// - template: key type, data type
 	///
 	private:
-		K key;
-		D data;
-		bst_node* left;
-		bst_node* right;
-	public:
-		bst_node* get_left() {return left;}
-		bst_node* get_right() {return right;}
-		void set_left(bst_node* l) {left = l;}
-		void set_right(bst_node* r) {right = r;}
-		void set_key(K k) {key = k;}
-		void set_data(D d) { data = d; }
-		K get_key() {return key;}
-		void print(std::ostream& out) {
-			out << "KEY: "  << get_key() << "\n" 
-				<< "DATA: " << data      << "\n";
+		KY _key;
+		DT _data;
+		bst_node* _left;
+		bst_node* _right;
+		void _print(std::ostream& out) {
+			out << "-------------------------------------------------\n"
+				<< "BST NODE KEY: " << _key << "\n"
+				<< "BST NODE DATA: \n" << _data << "\n"
+				<< "-------------------------------------------------\n";
 		}
+	public:
+		bst_node* get_left() {return _left;}
+		bst_node* get_right() {return _right;}
+		void set_left(bst_node* l) {_left = l;}
+		void set_right(bst_node* r) {_right = r;}
+		void set_key(KY k) {_key = k;}
+		void set_data(DT d) { _data = d; }
+		KY get_key() {return _key;}
+		void print(std::ostream& out) { _print(out); }
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////
 /// Prototype for the binary search tree template class
-template <typename T, typename D>
+template <typename KY, typename DT>
 class binary_search_tree {
 	private:
 		
@@ -38,71 +41,92 @@ class binary_search_tree {
 		///
 		///	- template: key type, data type
 
-		bst_node<T, D>* root;
-		bst_node<T, D>* _create_leaf(T key, D data);
-		void _add_leaf(T key, D data, bst_node<T, D>* ptr);
-		void _print_in_order(bst_node<T, D>* ptr);
-		bst_node<T, D>* _return_node(T key, bst_node<T, D>* ptr);
-		bst_node<T, D>* return_node(T key);
-		T _find_smallest(bst_node<T, D>* ptr);
-		void _remove_node(T key, bst_node<T, D>* parent);
+		bst_node<KY, DT>* root;
+		bst_node<KY, DT>* _create_leaf(KY key, DT data);
+		void _add_leaf(KY key, DT data, bst_node<KY, DT>* ptr);
+		void _print_in_order(bst_node<KY, DT>* ptr);
+		bst_node<KY, DT>* _return_node(KY key, bst_node<KY, DT>* ptr);
+		
+		KY _find_smallest(bst_node<KY, DT>* ptr);
+		void _remove_node(KY key, bst_node<KY, DT>* parent);
 		void _remove_root_match();
-		void _remove_match(bst_node<T, D>* parent, bst_node<T, D>* match, bool left);
-		void _remove_subtree(bst_node<T, D>* ptr);
+		void _remove_match(bst_node<KY, DT>* parent, bst_node<KY, DT>* match, bool left);
+		void _remove_subtree(bst_node<KY, DT>* ptr);
 
 	public:
 
 		binary_search_tree();;
 		~binary_search_tree();
-		void add_leaf(T key, D data);
+		void add_leaf(KY key, DT data);
 		void print_in_order();
-		T return_root_key();
-		void print_children(T key);
-		T find_smallest();
-		void remove_node(T key);
+		KY return_root_key();
+		void print_children(KY key);
+		KY find_smallest();
+		void remove_node(KY key);
 		void print_root();
-
+		bst_node<KY, DT>* return_node(KY key);
 };
 ///////////////////////////////////////////////////////////////////////////////////////
 
 
 ///////////////////////////////////////////////////////////////////////////////////////
 /// Implementation of the binary search tree class
-template <typename T, typename D>
-void binary_search_tree<T, D>::print_root() {
-	std::cout << "The root has key ";
+template <typename KY, typename DT>
+void 
+binary_search_tree<KY, DT>::print_root() {
+
+	std::cout << "The binary tree root node:\n ";
 	root->print(std::cout);
 	std::cout << std::endl;
+
 }
 
-template<typename T, typename D>
-inline bst_node<T, D>* binary_search_tree<T, D>::_create_leaf(T key, D data) {
-	bst_node<T, D>* n = new bst_node<T, D>;
+
+template<typename KY, typename DT>
+inline bst_node<KY, DT>* 
+binary_search_tree<KY, DT>::_create_leaf(KY key, DT data) {
+
+	bst_node<KY, DT>* n = new bst_node<KY, DT>;
 	n->set_key(key);
 	n->set_data(data);
 	n->set_left(nullptr);
 	n->set_right(nullptr);
 	return n;
+
 }
 
-template<typename T, typename D>
-inline void binary_search_tree<T, D>::_add_leaf(T key, D data, bst_node<T, D>* ptr) {
+
+template<typename KY, typename DT>
+inline void 
+binary_search_tree<KY, DT>::_add_leaf(KY key, DT data, bst_node<KY, DT>* ptr) {
+
 	if (root == nullptr) root = _create_leaf(key, data);
 	else if (key < ptr->get_key()) {
-		if (ptr->get_left() != nullptr)_add_leaf(key, data, ptr->get_left());
-		else ptr->set_left(_create_leaf(key, data));
+		if (ptr->get_left() != nullptr) {
+			_add_leaf(key, data, ptr->get_left());
+		}
+		else {
+			ptr->set_left(_create_leaf(key, data));
+		}
 	}
 	else if (key > ptr->get_key()) {
-		if (ptr->get_right() != nullptr) _add_leaf(key, data, ptr->get_right());
-		else ptr->set_right(_create_leaf(key, data));
+		if (ptr->get_right() != nullptr) {
+			_add_leaf(key, data, ptr->get_right());
+		}
+		else {
+			ptr->set_right(_create_leaf(key, data));
+		}
 	}
 	else {
 		std::cerr << "The key " << key << " has already been added to the tree\n";
 	}
+
 }
 
-template<typename T, typename D>
-inline void binary_search_tree<T, D>::_print_in_order(bst_node<T, D>* ptr) {
+
+template<typename KY, typename DT>
+inline void 
+binary_search_tree<KY, DT>::_print_in_order(bst_node<KY, DT>* ptr) {
 
 	if (root != nullptr) {
 
@@ -123,8 +147,10 @@ inline void binary_search_tree<T, D>::_print_in_order(bst_node<T, D>* ptr) {
 
 }
 
-template<typename T, typename D>
-inline bst_node<T, D>* binary_search_tree<T, D>::_return_node(T key, bst_node<T, D>* ptr) {
+
+template<typename KY, typename DT>
+inline bst_node<KY, DT>* 
+binary_search_tree<KY, DT>::_return_node(KY key, bst_node<KY, DT>* ptr) {
 
 	if (ptr != nullptr) {
 		if (ptr->get_key() == key) {
@@ -145,19 +171,23 @@ inline bst_node<T, D>* binary_search_tree<T, D>::_return_node(T key, bst_node<T,
 
 }
 
-template<typename T, typename D>
-inline bst_node<T, D>* binary_search_tree<T, D>::return_node(T key) {
+
+template<typename KY, typename DT>
+inline bst_node<KY, DT>* 
+binary_search_tree<KY, DT>::return_node(KY key) {
 
 	return _return_node(key, root);
 
 }
 
-template<typename T, typename D>
-inline T binary_search_tree<T, D>::_find_smallest(bst_node<T, D>* ptr) {
+
+template<typename KY, typename DT>
+inline KY 
+binary_search_tree<KY, DT>::_find_smallest(bst_node<KY, DT>* ptr) {
 
 	if (root == nullptr) {
 		std::cerr << "The tree is empty" << std::endl;
-		return T(0);
+		return KY(0);
 	}
 	else {
 		if (ptr->get_left() != nullptr) {
@@ -170,8 +200,11 @@ inline T binary_search_tree<T, D>::_find_smallest(bst_node<T, D>* ptr) {
 
 }
 
-template<typename T, typename D>
-inline void binary_search_tree<T, D>::_remove_node(T key, bst_node<T, D>* parent) {
+
+template<typename KY, typename DT>
+inline void 
+binary_search_tree<KY, DT>::_remove_node(KY key, bst_node<KY, DT>* parent) {
+
 	if (root != nullptr) {
 		if (root->get_key() == key) {
 			_remove_root_match();
@@ -195,13 +228,17 @@ inline void binary_search_tree<T, D>::_remove_node(T key, bst_node<T, D>* parent
 	else {
 		std::cerr << "the tree is empty" << std::endl;
 	}
+
 }
 
-template<typename T, typename D>
-inline void binary_search_tree<T, D>::_remove_root_match() {
+
+template<typename KY, typename DT>
+inline void 
+binary_search_tree<KY, DT>::_remove_root_match() {
+
 	if (root != nullptr) {
-		bst_node<T, D>* delPtr = root;
-		T root_key = root->get_key();
+		bst_node<KY, DT>* delPtr = root;
+		KY root_key = root->get_key();
 
 		// root node has zero children
 		if (root->get_left() == nullptr && root->get_right() == nullptr) {
@@ -225,7 +262,7 @@ inline void binary_search_tree<T, D>::_remove_root_match() {
 		}
 		// root node has two children
 		else {
-			T smallest_in_right_subtree;
+			KY smallest_in_right_subtree;
 			smallest_in_right_subtree = _find_smallest(root->get_right());
 			_remove_node(smallest_in_right_subtree, root);
 			root->set_key(smallest_in_right_subtree);
@@ -236,14 +273,18 @@ inline void binary_search_tree<T, D>::_remove_root_match() {
 	else {
 		std::cerr << "cannot remove root; the tree is empty" << std::endl;
 	}
+
 }
 
-template<typename T, typename D>
-inline void binary_search_tree<T, D>::_remove_match(bst_node<T, D>* parent, bst_node<T, D>* match, bool left) {
+
+template<typename KY, typename DT>
+inline void 
+binary_search_tree<KY, DT>::_remove_match(bst_node<KY, DT>* parent, bst_node<KY, DT>* match, bool left) {
+
 	if (root != nullptr) {
-		bst_node<T, D>* delPtr;
-		T match_key = match->get_key();
-		T smallest_in_right_subtree;
+		bst_node<KY, DT>* delPtr;
+		KY match_key = match->get_key();
+		KY smallest_in_right_subtree;
 
 		if (match->get_left() == nullptr && match->get_right() == nullptr) {
 			delPtr = match;
@@ -283,10 +324,19 @@ inline void binary_search_tree<T, D>::_remove_match(bst_node<T, D>* parent, bst_
 	else {
 		std::cerr << "Cannot remove match: tree is empty\n";
 	}
+
 }
 
-template<typename T, typename D>
-inline void binary_search_tree<T, D>::_remove_subtree(bst_node<T, D>* ptr) {
+
+template<typename KY, typename DT>
+inline void 
+binary_search_tree<KY, DT>::_remove_subtree(bst_node<KY, DT>* ptr) {
+
+	///
+	///	Method to recursively remove the subtree,
+	/// starting at node "ptr".
+	///
+
 	if (ptr != nullptr) {
 		if (ptr->get_left() != nullptr) {
 			_remove_subtree(ptr->get_left());
@@ -299,22 +349,39 @@ inline void binary_search_tree<T, D>::_remove_subtree(bst_node<T, D>* ptr) {
 
 }
 
-template<typename T, typename D>
-inline binary_search_tree<T, D>::binary_search_tree() { 
+
+template<typename KY, typename DT>
+inline 
+binary_search_tree<KY, DT>::binary_search_tree() { 
+
+	///
+	///	Default constructor.
+	///
+	/// Set the root to point at nullptr.
 
 	root = nullptr; 
 
 }
 
-template<typename T, typename D>
-inline binary_search_tree<T, D>::~binary_search_tree() {
+
+template<typename KY, typename DT>
+inline 
+binary_search_tree<KY, DT>::~binary_search_tree() {
+
+	///
+	///	Default destructor.
+	///
+	/// Recursively remove the subtree, starting from the root node.
+	///
 
 	_remove_subtree(root); 
 
 }
 
-template<typename T, typename D>
-inline void binary_search_tree<T, D>::add_leaf(T key, D data) {
+
+template<typename KY, typename DT>
+inline void 
+binary_search_tree<KY, DT>::add_leaf(KY key, DT data) {
 	///
 	/// when adding leaves to the binary search tree, pass in two arguments:
 	/// 1) the key value of the node: this will be used to index the nodes
@@ -325,43 +392,71 @@ inline void binary_search_tree<T, D>::add_leaf(T key, D data) {
 
 }
 
-template<typename T, typename D>
-inline void binary_search_tree<T, D>::print_in_order() {
+
+template<typename KY, typename DT>
+inline void 
+binary_search_tree<KY, DT>::print_in_order() {
+
 	_print_in_order(root);
 	std::cout << std::endl;
+
 }
 
-template<typename T, typename D>
-inline T binary_search_tree<T, D>::return_root_key() {
+
+template<typename KY, typename DT>
+inline KY 
+binary_search_tree<KY, DT>::return_root_key() {
 
 	if (root != nullptr) {
 		return root->get_key();
 	}
 	else {
-		return T(0);
+		return KY(0);
 	}
 
 }
 
-template<typename T, typename D>
-inline void binary_search_tree<T, D>::print_children(T key) {
-	bst_node<T, D>* ptr = return_node(key);
+
+template<typename KY, typename DT>
+inline void 
+binary_search_tree<KY, DT>::print_children(KY key) {
+
+	bst_node<KY, DT>* ptr = return_node(key);
 	if (ptr != nullptr) {
 		std::cout << "parent node = " << ptr->get_key() << "\n";
-		ptr->get_left() == nullptr ? std::cout << "left child = null\n" : std::cout << "left child = " << ptr->get_left()->get_key() << std::endl;
-		ptr->get_right() == nullptr ? std::cout << "right child = null\n" : std::cout << "right child = " << ptr->get_right()->get_key() << std::endl;
+		ptr->get_left() == nullptr ?
+			std::cout << "left child = null\n" :
+			std::cout << "left child = " << ptr->get_left()->get_key() << std::endl;
+		ptr->get_right() == nullptr ?
+			std::cout << "right child = null\n" :
+			std::cout << "right child = " << ptr->get_right()->get_key() << std::endl;
 	}
 	else {
 		std::cerr << "the key " << key << " is not in the tree\n";
 	}
+
 }
 
-template<typename T, typename D>
-inline T binary_search_tree<T, D>::find_smallest() {
+
+template<typename KY, typename DT>
+inline KY 
+binary_search_tree<KY, DT>::find_smallest() {
+
 	return _find_smallest(root);
+
 }
 
-template <typename T, typename D>
-void binary_search_tree<T, D>::remove_node(T key) {
+
+template <typename KY, typename DT>
+void 
+binary_search_tree<KY, DT>::remove_node(KY key) {
+
+	///
+	///	Method to remove the node with key "key"
+	///
+
+	/// Call the private method to recursively remove
+	/// a node with a given key, starting at the root node.
 	_remove_node(key, root);
+
 };
