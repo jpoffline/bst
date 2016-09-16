@@ -1,13 +1,20 @@
 #pragma once
 #include <iostream>
 
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////
+/// Definition of the binary search tree node.
 template <typename KY, typename DT>
 class bst_node {
+	
 	///
-	///	node element of the binary search tree.
+	/// Template parameters: 
+	///		-> key type  (KY)
+	///		-> data type (DT)
 	///
-	/// - template: key type, data type
-	///
+
 	private:
 		KY _key;
 		DT _data;
@@ -29,6 +36,10 @@ class bst_node {
 		KY get_key() {return _key;}
 		void print(std::ostream& out) { _print(out); }
 };
+///////////////////////////////////////////////////////////////////////////////////////
+
+
+
 
 ///////////////////////////////////////////////////////////////////////////////////////
 /// Prototype for the binary search tree template class
@@ -37,9 +48,10 @@ class binary_search_tree {
 	private:
 		
 		///
-		/// binary search tree
+		///	Template parameters: 
+		///		-> key type  (KY)
+		///		-> data type (DT)
 		///
-		///	- template: key type, data type
 
 		bst_node<KY, DT>* root;
 		bst_node<KY, DT>* _create_leaf(KY key, DT data);
@@ -55,7 +67,7 @@ class binary_search_tree {
 
 	public:
 
-		binary_search_tree();;
+		binary_search_tree();
 		~binary_search_tree();
 		void add_leaf(KY key, DT data);
 		void print_in_order();
@@ -65,6 +77,7 @@ class binary_search_tree {
 		void remove_node(KY key);
 		void print_root();
 		bst_node<KY, DT>* return_node(KY key);
+
 };
 ///////////////////////////////////////////////////////////////////////////////////////
 
