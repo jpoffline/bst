@@ -131,14 +131,18 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="binary_search_tree.h" />
+    <ClInclude Include="complex_number.h" />
     <ClInclude Include="data_structure_types.h" />
+    <ClInclude Include="hashtable.h" />
     <ClInclude Include="linked_list.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="binary_search_tree.cpp" />
+    <ClCompile Include="complex_number.cpp" />
     <ClCompile Include="data_structure_types.cpp" />
+    <ClCompile Include="hashtable.cpp" />
     <ClCompile Include="linked_list.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

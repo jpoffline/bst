@@ -33,6 +33,12 @@
     <ClInclude Include="data_structure_types.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="complex_number.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="hashtable.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -45,6 +51,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="data_structure_types.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="complex_number.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="hashtable.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -36,12 +36,17 @@ class linked_list {
 		NODE<KY>* CURR;
 		NODE<KY>* TEMP;
 
+		int nnodes;
+
 	public:
 
 		linked_list();
 		void add_node(KY data_add);
 		void delete_node(KY data_del);
 		void print(std::ostream& out);
+		void print(std::ostream& out, std::string sep);
+		bool is_empty();
+		int get_n_nodes();
 
 };
 ///////////////////////////////////////////////////////////////////////////////////////
@@ -62,7 +67,10 @@ inline linked_list<KY>::linked_list() {
 	CURR = nullptr;
 	TEMP = nullptr;
 
+	nnodes = 0;
+
 }
+
 
 template<class KY>
 inline void 
@@ -72,7 +80,7 @@ linked_list<KY>::add_node(KY data_add) {
 	n->set_next(nullptr);
 	n->set_data(data_add);
 
-	if (HEAD != nullptr) {
+	if (!is_empty()) {
 		CURR = HEAD;
 		while (CURR->get_next() != nullptr) {
 			CURR = CURR->get_next();
@@ -83,12 +91,15 @@ linked_list<KY>::add_node(KY data_add) {
 		HEAD = n;
 	}
 
+	nnodes++;
+
 }
+
 
 template<class KY>
 inline void 
 linked_list<KY>::delete_node(KY data_del) {
-
+	 
 	NODE<KY>* delPtr = nullptr;
 	TEMP = HEAD;
 	CURR = HEAD;
@@ -115,18 +126,45 @@ linked_list<KY>::delete_node(KY data_del) {
 
 }
 
+
 template<class KY>
 inline void 
 linked_list<KY>::print(std::ostream & out) {
+
+	print(out, " ");
+
+}
+
+
+template<class KY>
+inline void 
+linked_list<KY>::print(std::ostream & out, std::string sep) {
 
 	CURR = HEAD;
 
 	while (CURR != nullptr) {
 		CURR->print(out);
-		out << " ";
+		out << sep;
 		CURR = CURR->get_next();
 	}
 
-	out << "\n";
+}
 
+
+template<class KY>
+inline bool 
+linked_list<KY>::is_empty() {
+
+	if (HEAD != nullptr) return false;
+	return true;
+
+}
+
+
+template<class KY>
+inline int 
+linked_list<KY>::get_n_nodes() {
+
+	return nnodes;
+	
 }

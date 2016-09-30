@@ -7,7 +7,9 @@
 #include "../lib/linked_list.h"
 #include "../lib/binary_search_tree.h"
 #include "../lib/data_structure_types.h"
-
+#include "../lib/complex_number.h"
+#include "../lib/hashtable.h"
+#include <time.h>
 EVENT_PROXY_COLLECTION<int, int, int>
 gen_event_pc(int N) {
 	/// Quick function to generate and return 
@@ -123,12 +125,163 @@ void points_example() {
 
 }
 
+std::vector<std::vector<int>> 
+gen_matrix(int nrows, int ncols) {
+	std::vector<std::vector<int>> matrix;
+	for (int i = 0; i < nrows; i++) {
+		std::vector<int> row;
+		row.reserve(ncols);
+		for (int j = 0; j < ncols; j++) {
+			row.push_back(j + i);
+		}
+		matrix.push_back(row);
+	}
+	return matrix;
+}
+
+void matrix_row_traversal(int nrows, int ncols, std::vector<std::vector<int>> matrix) {
+	
+	int result = 0;
+
+	for (int row = 0; row < nrows; row++) {
+		for (int col = 0; col < ncols; col++) {
+			//std::cout << matrix[row][col] << " ";
+			result = matrix[row][col] + 1;
+		}
+	}
+
+}
+
+void matrix_col_traversal(int nrows, int ncols, std::vector<std::vector<int>> matrix) {
+
+	int result = 0;
+
+	for (int col = 0; col < ncols; col++) {
+		for (int row = 0; row < nrows; row++) {
+			//std::cout << matrix[row][col] << " ";
+			result = matrix[row][col] + 1;
+		}
+	}
+
+}
+
+
+
+double run_test(int log_2_size, int ntests) {
+
+	double sum = 0.0;
+
+	int nrows = 1 << log_2_size;
+	int ncols = 1 << log_2_size;
+	auto matrix = gen_matrix(nrows, ncols);
+
+	for (int test = 0; test < ntests; test++) {
+		clock_t t_start_row = clock();
+		matrix_row_traversal(nrows, ncols, matrix);
+		clock_t t_end_row = clock();
+
+		clock_t t_start_col = clock();
+		matrix_col_traversal(nrows, ncols, matrix);
+		clock_t t_end_col = clock();
+
+		auto delta_row = t_end_row - t_start_row;
+		auto delta_col = t_end_col - t_start_col;
+		auto frac = (double)delta_col / (double)delta_row;
+		sum += frac;
+	}
+	return sum / (double)ntests;
+
+}
+
+class item {
+private:
+	public:
+		std::string name;
+		std::string drink;
+		int age;
+		item() {};
+		~item() {};
+		item(std::string n, std::string d, int a = 12) { name = n; drink = d; age = a; }
+		friend std::ostream &operator <<(std::ostream& out, const item& p) {
+			out
+				<< "(" << p.name << ", " << p.drink << ", " << p.age << ")";
+			return out;
+		}
+		std::string hashablekey() { return name+drink; }
+};
+
+
+void hash_tester() {
+
+	/// Initialise a hashtable object.
+	/// Pass in as template arguments the 
+	/// bucket data type, and the data type of the nodes.
+	hashtable<linked_list<item>, item> gash(30);
+
+	/// Add items to the hash table
+	gash.add_item("J", item("Jonathan", "coffee", 28));
+	gash.add_item("M", item("Matt", "juice", 90));
+	gash.add_item("M", item("Mattt", "juice", 31));
+	gash.add_item("A", item("Jonathan", "coffee", 28));
+	gash.add_item(item("Matt", "juice", 90));
+	gash.add_item("C", item("Mattt", "juice", 31));
+	gash.add_item("D", item("Jonathan", "coffee", 28));
+	gash.add_item("E", item("Matt", "juice", 90));
+	gash.add_item("F", item("Mattt", "juice", 31));
+	gash.add_item("G", item("Jonathan", "coffee", 28));
+	gash.add_item("H", item("Matt", "juice", 90));
+	gash.add_item("I", item("Mattt", "juice", 31));
+	gash.add_item("J", item("Jonathan", "coffee", 28));
+	gash.add_item("K", item("Matt", "juice", 90));
+	gash.add_item("L", item("Mattt", "juice", 31));
+	gash.add_item(item("Jonathan", "coffee", 28));
+	gash.add_item("N", item("Matt", "juice", 90));
+	gash.add_item("O", item("Mattt", "juice", 31));
+	gash.add_item("O", item("Mattt", "juice", 31));
+	gash.add_item("O", item("Mattt", "juice", 31));
+	gash.add_item("O", item("Mattt", "juice", 31));
+	gash.add_item("O", item("Mattt", "juice", 31));
+	gash.add_item("O", item("Mattt", "juice", 31));
+	gash.add_item("O", item("Mattt", "juice", 31));
+
+	//gash.print_table(std::cout);
+	gash.print_table_stats(std::cout);
+
+
+}
+
 int main()
 {
 
-	event_proxy_collection_example();
-	event_example();
-	points_example();
+	//event_proxy_collection_example();
+	//event_example();
+	//points_example();
+
+	//int log_2_size = 6;
+	//int ntests = 100;
+	//auto av = run_test(log_2_size, ntests);
+	//std::cout << "log2_size = " << log_2_size << std::endl;
+	//std::cout << "Col/row = " << av << std::endl;
+	/*
+	complex_number<double> c1(1, 1);
+	complex_number<double> c2(2, 3);
+	auto c3 = c1 + c2;
+	auto c4 = c1 * c2;
+	auto c5 = c2 - c1;
+	auto c6 = c1 / c2;
+	c5.print();
+	c6.print();
+	//c1.print();
+	//c3.print();
+	//c4.print();
+	std::cout << c1.len() << std::endl;
+	std::cout << c1 << std::endl;
+	if (c1 == c2)std::cout << "yes" << std::endl;
+	else std::cout << "no" << std::endl;
+	*/
+
+	hash_tester();
+
     return 0;
 }
 
