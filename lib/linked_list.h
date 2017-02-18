@@ -1,4 +1,5 @@
 #pragma once
+#include <iostream>
 #include <ostream>
 #include <vector>
 
@@ -73,7 +74,7 @@ inline linked_list<KY>::linked_list() {
 
 
 template<class KY>
-inline void 
+inline void
 linked_list<KY>::add_node(KY data_add) {
 
 	NODE<KY>* n = new NODE<KY>;
@@ -97,9 +98,9 @@ linked_list<KY>::add_node(KY data_add) {
 
 
 template<class KY>
-inline void 
+inline void
 linked_list<KY>::delete_node(KY data_del) {
-	 
+
 	NODE<KY>* delPtr = nullptr;
 	TEMP = HEAD;
 	CURR = HEAD;
@@ -128,7 +129,7 @@ linked_list<KY>::delete_node(KY data_del) {
 
 
 template<class KY>
-inline void 
+inline void
 linked_list<KY>::print(std::ostream & out) {
 
 	print(out, " ");
@@ -137,7 +138,7 @@ linked_list<KY>::print(std::ostream & out) {
 
 
 template<class KY>
-inline void 
+inline void
 linked_list<KY>::print(std::ostream & out, std::string sep) {
 
 	CURR = HEAD;
@@ -152,7 +153,7 @@ linked_list<KY>::print(std::ostream & out, std::string sep) {
 
 
 template<class KY>
-inline bool 
+inline bool
 linked_list<KY>::is_empty() {
 
 	if (HEAD != nullptr) return false;
@@ -162,9 +163,9 @@ linked_list<KY>::is_empty() {
 
 
 template<class KY>
-inline int 
+inline int
 linked_list<KY>::get_n_nodes() {
 
 	return nnodes;
-	
+
 }
